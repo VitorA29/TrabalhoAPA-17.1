@@ -1,0 +1,15 @@
+Baile (tree) begin://tree :: arvore de funcionarios; lista :: lista de funcionarios convidados.
+	se tree não possui filho then:
+		adicione funcionario(tree) a lista.//funcionario(t) :: retorna o funcionario desse no da arvore.
+		retorne conviviabilidade(tree).//conviviabilidade(t) :: retorna a conviviabilidade desse no da arvore.
+	senão:
+		A=0.0, B=conviviabilidade(tree).
+		para x em filho(tree) then:
+			A+=Baile(x).
+			para y em filho(x) then:
+				B+=resolver(y).
+		se B>A then:
+			adicione funcionario(tree) a lista.
+			retorne B.
+		retorna A.
+end.
