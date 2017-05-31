@@ -17,4 +17,6 @@ int empty_tree(Tree);
 void print_node_tree(Tree);
 void print_super_subs(Tree);
 void print_tree(Tree);
+void write_file_tree(Tree);
+Tree read_file_tree(void);
 void exclude_tree(Tree);
