@@ -4,7 +4,12 @@ struct struct_employee{
 	char* name;
 };
 
-Employee create_employee(void){return (Employee)malloc(sizeof(SEmployee));}
+Employee create_employee(char *n){
+	Employee resp=(Employee)malloc(sizeof(SEmployee));
+	resp->name=(char*)malloc(strlen(n)*sizeof(char));
+	strcpy(resp->name, n);
+	return resp;
+}
 
 Employee gerate_employee(void){
 	Employee resp=(Employee)malloc(sizeof(SEmployee));
@@ -17,7 +22,7 @@ Employee gerate_employee(void){
 	char aux[200];
 	do{
 		scanf(" %s", aux);
-		if(strlen(resp->name)>0)strcat(resp->name,"_");
+		if(strlen(resp->name)>0)strcat(resp->name," ");
 		if((strlen(resp->name)+strlen(aux)) > i-1){
 			strncat(resp->name, aux, (i-strlen(resp->name)));
 			return resp;
@@ -30,9 +35,7 @@ Employee gerate_employee(void){
 void set_employee_name(Employee e, char *n){
 	if(!e)return;
 	if(e->name)free(e->name);
-	int i=0;
-	while(n[i]!='\0')i++;
-	e->name=(char*)malloc(i*sizeof(char));
+	e->name=(char*)malloc(strlen(n)*sizeof(char));
 	strcpy(e->name, n);
 }
 

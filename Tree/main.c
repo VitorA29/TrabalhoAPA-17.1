@@ -8,17 +8,22 @@ List l;
 float cr;
 
 int main(){
-	root=create_tree();
-	initialize_tree(root);
-	l=create_list();
 	char deci, auxAtoi[21];
 	int index, new;
+	printf("Import existent tree from archive?<s|n> ");
+	scanf(" %c", &deci);
+	if(deci=='n'){
+		root=create_tree();
+		initialize_tree(root);
+	}
+	else root=read_file_tree();
+	l=create_list();
 	Tree t = root;
 	e=NULL;
 	while(1){
 		printf("\n");
 		print_super_subs(t);
-		printf("\n[1]Mark this employee as supervisor;\n[2]Insert employee in marked supervisor;\n[3]Print whole tree;\n[4]Go to a subordinate employee;\n[5]Back to supervisor;\n[6]PARTIU BAILE!!!\n[e]Exit;\n");
+		printf("\n[1]Mark this employee as supervisor;\n[2]Insert employee in marked supervisor;\n[3]Print whole tree;\n[4]Go to a subordinate employee;\n[5]Back to supervisor;\n[6]PARTIU BAILE!!!\n[7]Export tree to archive;\n[e]Exit;\n");
 		scanf(" %c", &deci);
 		switch(deci){
 			case '1':
@@ -79,6 +84,9 @@ int main(){
 					printf("%.5f\t", resolver(root, l));
 					print_list(l);
 				}
+				break;
+			case '7':
+				if(!empty_tree(root))write_file_tree(root);
 				break;
 			case 'e':
 				exclude_tree(root);

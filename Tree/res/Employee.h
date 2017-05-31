@@ -4,7 +4,7 @@
 
 typedef struct struct_employee *Employee, SEmployee;
 
-Employee create_employee(void);
+Employee create_employee(char *name);
 Employee gerate_employee(void);
 void set_employee_name(Employee, char *name);
 char* get_employee_name(Employee);

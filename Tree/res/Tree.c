@@ -182,21 +182,20 @@ Tree read_file_tree(void){
 	char *name;
 	int size, super, end;
 	float cr;
-	Employee emp = create_employee();
+	Employee emp;
 	fseek(fp, 0L, SEEK_END);
 	end=ftell(fp);
 	rewind(fp);
 	while(ftell(fp)!=end){
 		fread(&size, 1, sizeof(int), fp);
-		name=(char*)malloc(size*sizeof(char));
+		name=(char*)malloc((size+1)*sizeof(char));
 		fread(name, size, sizeof(char), fp);
 		fread(&super, 1, sizeof(int), fp);
 		fread(&cr, 1, sizeof(float), fp);
-		set_employee_name(emp, name);
+		emp = create_employee(name);
 		insert_index_tree(resp, emp, super, cr);
 		free(name);
 	}
-	exclude_employee(emp);
 	fclose(fp);
 	return resp;
 }
