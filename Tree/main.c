@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include "res/Tree.h"
+#include "res/Employee.h"
+#include "res/EmployeeList.h"
 #include "algorithm.c"
 
 Tree root, supervisor=NULL;
@@ -80,7 +82,7 @@ int main(){
 				break;
 			case '6':
 				if(!empty_tree(root)){
-					initialize_list(l);
+					clear_list(l);
 					printf("%.5f\t", resolver(root, l));
 					print_list(l);
 				}
