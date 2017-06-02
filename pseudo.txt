@@ -7,9 +7,9 @@ Baile (tree) begin://tree :: arvore de funcionarios; lista :: lista de funcionar
 		para x em filho(tree) then:
 			A+=Baile(x).
 			para y em filho(x) then:
-				B+=resolver(y).
+				B+=Baile(y).
 		se B>A then:
 			adicione funcionario(tree) a lista.
 			retorne B.
-		retorna A.
+		retorne A.
 end.
