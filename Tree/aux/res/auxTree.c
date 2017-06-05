@@ -1,4 +1,4 @@
-#include "Tree.h"
+#include "auxTree.h"
 
 static float const null=666.666;
 
@@ -6,7 +6,7 @@ static int counter=0;
 
 struct struct_employees_tree{
 	Employee me;
-	int numSubs, index;
+	int numSubs, index, complex;
 	Tree *sub, super;//Employees that I supervise; Employee that supervise me.
 	float cr;//Conviviality Rating.
 };
@@ -19,8 +19,11 @@ void initialize_tree(Tree t){
 	t->me=NULL;
 	t->index=0;
 	t->numSubs=0;
+	t->complex=0;
 	t->cr=null;
 }
+
+void pass(Tree t){t->complex++;}
 
 Tree search_tree(Tree t, Employee e){
 	if(!compare_employee(e, t->me))return t;
@@ -78,7 +81,7 @@ void print_node_tree(Tree t){
 	printf("{ %d - ", t->index);
 	print_employee(t->me);
 	if(t->cr==null)printf(" - null }");
-	else printf(" - %.5f }", t->cr);
+	else printf(" - %.5f - passd(%d) }", t->cr, t->complex);
 }
 
 void print_super_subs(Tree t){
@@ -148,6 +151,12 @@ static int insert_index_tree(Tree t, Employee emp, int superCount, float cr){
 	super->sub=(Tree*)realloc(super->sub, (super->numSubs)*sizeof(Tree));
 	super->sub[super->numSubs-1]=new;
 	return 1;
+}
+
+int count_complex(Tree t){
+	int complex=t->complex, i;
+	for(i=0; i<t->numSubs; i++)complex+=count_complex(t->sub[i]);
+	return complex;
 }
 
 void write_file_tree(Tree root){
@@ -229,4 +238,17 @@ void exclude_tree(Tree t){
 	for(i=0;i<t->numSubs;i++)exclude_tree(t->sub[i]);
 	free(t);
 	return;
+}
+
+void print_uma_folha(Tree root){
+	srand(time(NULL));
+	if(!root)return;
+	if(!has_sub_tree(root))print_super_subs(root);
+	Tree t=root;
+	int ind=0;
+	while(!has_sub_tree(has_sub_tree(t))){
+		ind = rand() %t->numSubs;
+		t=t->sub[ind];
+	}
+	print_super_subs(t);
 }

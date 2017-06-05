@@ -1,8 +1,8 @@
 #include <stdio.h>
-#include "res/Tree.h"
+#include "res/auxTree.h"
 #include "res/Employee.h"
 #include "res/EmployeeList.h"
-#include "algorithm.c"
+#include "auxAlg.c"
 
 Tree root = NULL, supervisor=NULL;
 Employee e;
@@ -25,7 +25,7 @@ int main(){
 	while(1){
 		printf("\n");
 		print_super_subs(t);
-		printf("\n[1]Mark this employee as supervisor;\n[2]Insert employee in marked supervisor;\n[3]Print whole tree;\n[4]Go to a subordinate employee;\n[5]Back to supervisor;\n[6]PARTIU BAILE!!!\n[7]Export tree to archive;\n[e]Exit;\n");
+		printf("\n[1]Mark this employee as supervisor;\n[2]Insert employee in marked supervisor;\n[3]Print whole tree;\n[4]Go to a subordinate employee;\n[5]Back to supervisor;\n[6]PARTIU BAILE!!!\n[7]Export tree to archive;\n[8]Ir folha;\n[e]Exit;\n");
 		scanf(" %c", &deci);
 		switch(deci){
 			case '1':
@@ -85,11 +85,14 @@ int main(){
 					clear_list(l);
 					printf("%.5f\t", resolver(root, l));
 					print_list(l);
-					printf("\n");
+					printf("\n%d\n", count_complex(root));
 				}
 				break;
 			case '7':
 				if(!empty_tree(root))write_file_tree(root);
+				break;
+			case '8':
+				if(!empty_tree(root))print_uma_folha(root);
 				break;
 			case 'e':
 				exclude_tree(root);
