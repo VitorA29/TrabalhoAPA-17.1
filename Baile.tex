@@ -1,0 +1,101 @@
+\documentclass[a4paper]{article}
+
+\usepackage[portuguese]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage {algpseudocode}
+\usepackage{amsmath}
+\usepackage[portuguese,onelanguage]{algorithm2e}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{natbib}
+\usepackage[a4paper,rmargin=2cm,lmargin=3cm,tmargin=3cm,bmargin=2cm]{geometry}
+\usepackage{subfig}
+
+\title{Organizando um Baile: Solução do Problema da Organização de uma festa}
+\author{Erick Grilo, Max Fratane   Matheus Prado e Vitor Araújo}
+
+\SetKwInput{Entrada}{Entrada}
+\SetKwInput{Resultado}{Resultado}
+\SetKwFor{Enquanto}{Enquanto}{faca}{fim-enquanto}
+\SetKwIF{Se}{Senao Se}{Senao}{Se}{Entao}{Senao}{fim-se}
+
+
+
+\begin{document}
+\begin{flushright}
+\thispagestyle{empty}
+\includegraphics[width=.2\textwidth]{castelao.png}
+\end{flushright}
+
+\begin{center}
+\vfill
+\vspace{-7em}
+\emph{\Large Organizando um Baile: Solução do Problema da Organização de uma festa}
+\begin{flushright}
+\vspace{1em}
+\makebox[.5\textwidth][l]{\parbox{.5\textwidth}{
+\vspace{2em}
+Erick Grilo\\ 
+Max Fratane\\ 
+Matheus Prado\\
+Vitor Santos\\
+}}
+\end{flushright}
+\vfill
+\end{center}
+
+\newpage
+
+\section{Introdução}
+\paragraph{} O problema consiste em que o professor Stewart foi contradado para prestar um serviço de consultoria para o presidente de uma determinada empresa que deseja realizar uma festa e nós vamos ajudá-lo. A empresa possui uma hierarquia tal que a relação de hierarquia forma uma árvore %inserir uma arvore daqui%
+cuja raiz é o presidente da empresa. O departamento do RH classificou cada um dos empregados com uma classificação de conviviabilidade (que é um número real). Para a festa ser proveitosa o máximo para todos que forem, o presidente não quer que ambos um funcionário e seu supervisor vão simultaneamente.
+\paragraph{} Ao professor Stewart, é dada uma árvore %vou colocar uma figura aqui%
+onde cada nó da árvore é um funcionário da companhia, que possui um nome e um valor de conviviabilidade, onde o pai desse nó é o seu supervisor imediato. O objetivo é criar um algoritmo que cria uma lista de convidados que maximiza a soma dos valores de conviviabilidade dos convidados.
+
+\section{O Algoritmo}
+\paragraph{} A ideia do algoritmo consiste em solucionar o problema para a árvore de funcionários, com dois casos: caso a árvore tenha somente um nó, e caso a árvore tenha mais de um nó. Dessa forna, a partir do enunciado, temos:
+
+
+\begin{equation}
+	Baile(tree) = \begin{cases}
+		\text{funcionário(\textit{tree}),}  \text{caso tree não tenha filhos}\\
+		\text{MAX} = \begin{cases}
+			\sum \text{Baile(\textit{t})),}  \forall t \in \text{filho(\textit{tree})}\\
+			\text{conviviabilidade(\textit{raiz})} + \sum  Baile(t), \forall t \in \text{filho(filho(\textit{tree}))}
+			\end{cases}
+		\end{cases}
+\end{equation}
+\paragraph{}Onde o caso base é o caso de \textit{tree} ser uma árvore com um só nó e a relação de recorrência consiste no caso de tree tenha filhos: temos que avaliar então, dentre todos os filhos da árvore de entrada, quais serão os nós da árvore que maximizarão o somatório de conviviabilidade, tomando a precaução de não permitir que um empregado e seu supervisor imediato possam ir ao baile. Nesse caso, na primeira linha da parte do MAX, é avaliado o caso dos filhos de tree (caso o nó da árvore atual vá à festa), e na segunda linha, a conviviabilidade do nó imediatamente acima de tree e os filhos dos seus filhos, ou seja, o funcionário do funcionário da empresa. Dessa forma, é evitado que um funcionário e seu supervisor imediato possam ir ao baile. A função funcionário retorna o funcionário de um determinado nó, enquanto a função conviviabiidade retorna o valor de conviviabilidade de um determinado nó.\\
+Da relação de recorrência apresentada acima, temos o seguinte pseudo-código, que ilustra como o algoritmo funciona:
+
+\begin{algorithm}
+\DontPrintSemicolon % Some LaTeX compilers require you to use \dontprintsemicolon instead
+\Entrada{tree: uma árvore com os funcionários da empresa, Lista: lista de convidados, inicialmente vazia}
+\Saida{Lista com os convidados com a maior soma de valores de conviviabilidade possível, respeitando a restrição, e a soma dos valores de convivabilidade dos elementos da lista.}
+Baile(tree,lista):\;
+    %continuar o equema do baile daqui( ta bugado)
+    \uIf{$\text{tree não possui filhos}$}{
+      $lista \gets \text{adicionar funcionario(tree)}$\;
+      \Return lista,conviviabilidade(tree)
+    }
+    \Else{
+      $A \gets 0.0$\;
+      $ B \gets \text{conviviabilidade(tree)}$\;
+      \ForEach{filho $x \in \text{filho(tree)}$}{
+      $A \gets A + Baile(x) $\;
+           \ForEach{filho $y \in \text{filho(x)} $}{
+           $B \gets B + Baile(y) $\;
+            }
+       }
+      \If{$B > A$}{
+	 $lista \gets \text{lista}+ \text{funcionário(tree)}$\;
+	\Return lista,B\;
+	}
+}  
+\caption{{\sc Baile}}
+\label{algo:duplicate}
+\end{algorithm}
+
+
+\end{document}
+
