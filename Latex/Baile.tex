@@ -4,7 +4,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage {algpseudocode}
 \usepackage{amsmath}
-\usepackage[portuguese,onelanguage]{algorithm2e}
+\usepackage[portuguese,onelanguage,lined]{algorithm2e}
 \usepackage{graphicx}
 \usepackage{setspace}
 \usepackage{natbib}
@@ -59,42 +59,75 @@ onde cada nó da árvore é um funcionário da companhia, que possui um nome e u
 \begin{equation}
 	Baile(tree) = \begin{cases}
 		\text{funcionário(\textit{tree}),}  \text{caso tree não tenha filhos}\\
-		\text{MAX} = \begin{cases}
-			\sum \text{Baile(\textit{t})),}  \forall t \in \text{filho(\textit{tree})}\\
-			\text{conviviabilidade(\textit{raiz})} + \sum  Baile(t), \forall t \in \text{filho(filho(\textit{tree}))}
+		\text{MAX}  \begin{cases}
+			\sum \text{Baile(\textit{t}),}  \forall t \in \text{filho(\textit{tree})}\\
+			\text{conviviabilidade(\textit{raiz})} + \sum  Baile(t), \forall t \in \text{neto(\textit{tree})}
 			\end{cases}
 		\end{cases}
 \end{equation}
-\paragraph{}Onde o caso base é o caso de \textit{tree} ser uma árvore com um só nó e a relação de recorrência consiste no caso de tree tenha filhos: temos que avaliar então, dentre todos os filhos da árvore de entrada, quais serão os nós da árvore que maximizarão o somatório de conviviabilidade, tomando a precaução de não permitir que um empregado e seu supervisor imediato possam ir ao baile. Nesse caso, na primeira linha da parte do MAX, é avaliado o caso dos filhos de tree (caso o nó da árvore atual vá à festa), e na segunda linha, a conviviabilidade do nó imediatamente acima de tree e os filhos dos seus filhos, ou seja, o funcionário do funcionário da empresa. Dessa forma, é evitado que um funcionário e seu supervisor imediato possam ir ao baile. A função funcionário retorna o funcionário de um determinado nó, enquanto a função conviviabiidade retorna o valor de conviviabilidade de um determinado nó.\\
-Da relação de recorrência apresentada acima, temos o seguinte pseudo-código, que ilustra como o algoritmo funciona:
+\paragraph{}Onde o caso base é o caso de \textit{tree} ser uma árvore com um só nó e a relação de recorrência consiste no caso de tree ter filhos: temos que avaliar então, dentre todos os filhos da árvore de entrada, quais serão os nós da árvore que maximizarão o somatório de conviviabilidade, tomando a precaução de não permitir que um empregado e seu supervisor imediato possam ir ao baile. Nesse caso, na primeira linha da parte do MAX, é avaliado o caso dos filhos de tree (caso o nó da árvore atual vá à festa), e na segunda linha, a conviviabilidade do nó imediatamente acima de tree e os filhos dos seus filhos, ou seja, o funcionário do funcionário da empresa. Dessa forma, é evitado que um funcionário e seu supervisor imediato possam ir ao baile. A função funcionário retorna o funcionário de um determinado nó, enquanto a função conviviabiidade retorna o valor de conviviabilidade de um determinado nó.\\
+
+\paragraph{}Da relação de recorrência apresentada acima, temos o seguinte pseudo-código, que ilustra como o algoritmo funciona:
 
 \begin{algorithm}
-\DontPrintSemicolon % Some LaTeX compilers require you to use \dontprintsemicolon instead
+\DontPrintSemicolon
+\Entrada{tree: uma árvore com os funcionários da empresa}
+\Saida{A lista de convidados tais que a soma dos valores de conviviabilidade de seus elementos seja a máxima possível}
+Resolver(tree):\;
+\Begin{
+Baile(tree,lista)\;
+\Return lista}
+\caption{{\sc Resolver}}
+\label{resolver}
+\end{algorithm}
+
+\paragraph{}Onde, a função \emph{resolver} retorna a lista desejada, enquanto a função principal responsável por procurar a sequência de valores que maximizam a soma das conviviabilidades (\emph{baile}) é chamada no seu escopo. Tal função tem seu comportamento descrito a seguir:\\
+
+\begin{algorithm}
+\DontPrintSemicolon 
 \Entrada{tree: uma árvore com os funcionários da empresa, Lista: lista de convidados, inicialmente vazia}
-\Saida{Lista com os convidados com a maior soma de valores de conviviabilidade possível, respeitando a restrição, e a soma dos valores de convivabilidade dos elementos da lista.}
+\Saida{O maior valor de conviviabilidade, de acordo com o caso}
+
 Baile(tree,lista):\;
-    %continuar o equema do baile daqui( ta bugado)
+\Begin{
+    \uIf{$\text{tree já foi visitado}$}{
+	$lista \gets \text{append(lista,lista(tree))}\text{//junta a lista de entrada com a lista armazenada no nó}$\;
+	\Return o valor (?) armazenado em tree (isso nao é a mesma coisa que convivabilidade(tree) nao né?);
+     }
     \uIf{$\text{tree não possui filhos}$}{
-      $lista \gets \text{adicionar funcionario(tree)}$\;
-      \Return lista,conviviabilidade(tree)
+      $lista \gets \text{adicionar funcionario(tree)}$//funcionário(tree): retorna o funcionário desse nó da árvore.\;
+      $visitada(tree) \gets True$//o nó tree é marcado como visitado\;
+      $listaArmazenada \gets lista(tree)$//armazena lista de tree\;
+      $crArmazenada \gets conviviabilidade(tree)$\;
+      \Return conviviabilidade(tree)//conviviabilidade(tree): retorna o valor de conviviabilidade desse nó da árvore.\;
     }
     \Else{
       $A \gets 0.0$\;
       $ B \gets \text{conviviabilidade(tree)}$\;
       \ForEach{filho $x \in \text{filho(tree)}$}{
-      $A \gets A + Baile(x) $\;
+      $A \gets A + Baile(x,listaA) $//listaA: lista auxiliar\;
            \ForEach{filho $y \in \text{filho(x)} $}{
-           $B \gets B + Baile(y) $\;
+           $B \gets B + Baile(y,listaB) $//listaB: lista auxiliar\;
             }
        }
       \If{$B > A$}{
-	 $lista \gets \text{lista}+ \text{funcionário(tree)}$\;
-	\Return lista,B\;
+	$listaB \gets \text{listaB}+ \text{funcionário(tree)}$\;
+	$visitada(tree) \gets True$\;
+	$listaArmazenada \gets listaArmazenada + listaB$\;
+	$lista \gets append(lista,listaB)$\;
+	\Return B\;
 	}
-}  
+	$visitada(tree) \gets True$\;
+	$listaArmazenada \gets listaArmazenada + listaA$\;
+	$lista \gets append(lista,listaA)$\;
+	$crArmazenada \gets crArmazenada +  A$\;
+	\Return A\;
+	}
+} 
 \caption{{\sc Baile}}
-\label{algo:duplicate}
+\label{baile}
 \end{algorithm}
+
 
 
 \end{document}
