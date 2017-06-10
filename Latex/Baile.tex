@@ -151,16 +151,28 @@ Seja \emph{Baile(T)}: A chamada da função \emph{Baile} tal como descrita na re
 
 \textbf{(ii) \underline{Hipótese de Indução:}} Sejam  T$_{1}$,T$_{2}$,T$_{3}$,\ldots,T$_{n}$ sub-árvores formadas a partir da raiz (árvore de entrada para o problema) cujas raízes estão no k-ésimo nível, para k = 1, 2, \ldots, n. Logo, supor que \emph{Baile}(T$_k$) vale, para k = 1, 2, \ldots, n. Por causa dessa suposição, temos que a relação de recorrência também passa a valer para sub-árvores de T$_k$, ou seja, árvores T$_{k_q}$ que são sub-árvores de uma T$_k$, com q = 1,2,\ldots,m.\\
 
-\textbf{(iii) \underline{Passo Indutivo:}} Provar válido  \emph{Baile}(T$_n+1$). Pela hipótese de indução, temos que \emph{Baile}(T$_k$) é o valor máximo da convivialidade para a sub-árvore de T$_n+1$, T$_k$, para k = 1,2,\ldots,n. Dessa forma, temos que \emph{Baile}(T$_k$) é o valor máximo do somatório do valor de convivialidade de T$_k$ e, portanto, a relação de recorrência encontrada na seção 2 vale. Logo, temos que analisar dois casos:\\
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale= 0.48]{arvorecorretude.png}
+\caption{Exemplo de uma árvore com até n níveis e m filhos, onde o limite de m pode variar de nível em nível, uma vez que a árvore é n-ária}
+\label{arvorecorretude}
+\end{figure}
 
-\textbf{I)} A árvore T$_n+1$ não possui filhos : pela base da indução, nota-se que o valor de convivalidade máximo de T$_n+1$ é o seu próprio valor de convivialidade.
+\textbf{(iii) \underline{Passo Indutivo:}} Provar válido para qualquer árvore do nível \emph{Baile}(T$_n+1$), uma T$_{n+1_q}$ qualquer, q = 1,2,\ldots,m.\\
+Ao entrarmos nesse passo, fixemos para uma T$_{n+1_q}$ qualquer tal como na árvore acima, sem perda de generalidade. A partir daí, temos:
+pela hipótese de indução, \emph{Baile}(T$_k$) é o valor máximo da convivialidade para uma sub-árvore do nível k, T$_{k}$, para k = k+1,k+2,\ldots,n. Dessa forma, temos que \emph{Baile}(T$_k$) é o valor máximo do somatório do valor de convivialidade de T$_k$. Ao considerarmos que \emph{Baile}(T$_n$), vale (pela hipótese de indução), se \emph{Baile}(T$_n$) possui filhos, chegamos em \emph{Baile}(T$_{n+1}$) recursivamente. Logo, temos que analisar dois casos distintos:
 
-\textbf{II)}A árvore T$_n+1$ possui filhos T$_k$, k = 1, 2, \ldots, n,:
-\paragraph{}Seja n$_1$ = $\sum \text{\emph{Baile(t)}}, \forall t \in \text{filho(T$_n+1$)}$. Pela hipótese de indução, temos que \emph{Baile}(T$_k$) vale. Portanto, n1 é o somatório de todos os valores máximos de convivialidade da árvore T$_n+1$, para k = 1,2,\ldots,n.\\
-Agora, seja n$_2$ = convivialidade(raiz) + $\sum \text{\emph{Baile(t)}}, \forall t \in \text{neto(T$_n$)}$. Pela hipótese de indução, temos que \emph{Baile}(T$_{k_q}$) também vale, $\forall(\text{T}_k)$  sub-árvore da (também sub-árvore) T$_k$. Tomando T$_k$ = T$_n$, a hipótese de indução vale também para um t neto de T$_n$.Dessa forma, temos que n2 é o somatório dos valores de convivialidade máximo da árvore T$_{k_q}$, para k = 1,2,\ldots,n e q = 1,2,\ldots,m.\\
-Logo, por n$_1$ e n$_2$, o valor de convivialidade máximo da árvore original que foi dada como entrada para o problema T$_n+1$  pode ser encontrada pela seguinte fórmula:\\
-\center \textbf{convivialidadeMaxima(T$_n+1$) =  MAX(n1,n2).}\\
-\paragraph{}Temos que a função acima culmina justamente na relação de recorrência que foi encontrada. Como MAX retorna o valor máximo entre dois valores, temos que convivialidadeMaxima retorna o valor máximo dentre os possíveis valores máximos que T$_n+1$ pode ter. Logo, \emph{Baile(T$_n+1$)} vale.\\
+\textbf{I)} Uma árvore qualquer do nível T$_{n+1}$, a T$_{n+1_q}$ que estamos analisando não possui filhos : pela base da indução, nota-se que o valor de convivalidade máximo dessa árvore, é o seu próprio valor de convivialidade.
+
+\textbf{II)}Uma árvore qualquer do nível T$_{n+1}$ possui filhos:
+\paragraph{}Seja n$_1$ = $\sum \text{\emph{Baile(t)}}, \forall t \in \text{filho(T$_{n+1_q}$)}$. Pela hipótese de indução, temos que \emph{Baile}(T$_k$) vale, para k = 1,2,\ldots, n. Como extendemos isso para qualquer filho de T$_k$ (logo, para qualquer filho de T$_n$), vale também para o caso de T$_{n+1_q}$ (que é alcançado recursivamente na chamada \emph{Baile}(T$_n$), onde T$_{n+1}$ é filha de T$_n$.  Portanto, n1 é o somatório dos valores dos filhos de uma árvore qualquer do nível T$_{n+1}$, a T$_{n+1_q}$ genérica introduzida no passo indutivo.
+
+Agora, seja n$_2$ = convivialidade(raiz) + $\sum \text{\emph{Baile(t)}}, \forall t \in \text{neto(T$_{n+1}$)}$. Para o caso de T$_{n+1}$, faz-se a raiz = uma árvore de T$_n$ que seja a raiz da árvore qualquer que estamos analisando em T$_{n+1}$. Pela hipótese de indução, temos que \emph{Baile}(T$_{k_q}$) também vale, $\forall(\text{T}_k)$  sub-árvore da (também sub-árvore) T$_k$. Tomando T$_k$ = T$_n$, a hipótese de indução vale também para um t neto de T$_n$. Dessa forma, temos que n2 é o somatório dos valores de convivialidade da árvore T$_{k_q}$, para k = 1,2,\ldots,n e q = 1,2,\ldots,m.\\
+Logo, por n$_1$ e n$_2$, o valor de convivialidade máximo da árvore original que foi dada como entrada para o problema (T), pois como  \emph{Baile}(T)  vale para qualquer sub-árvore no n-ésimo nível, o valor total pode ser encontrada pela seguinte fórmula:\\
+\begin{center} \textbf{convivialidadeMaxima(T$_{n+1_q}$) =  MAX(n1,n2),} \\onde T$_{n+1_q}$ é uma sub-árvore qualquer de alguma sub-árvore no nível n+1 da árvore original.\\
+\end{center}
+
+\paragraph{}Temos que a função acima culmina justamente na relação de recorrência que foi encontrada. Como MAX retorna o valor máximo entre dois valores, temos que convivialidadeMaxima retorna o valor máximo dentre os possíveis valores máximos que T$_{n+1_q}$ pode ter. Logo, para qualquer sub-árvore de T$_{n+1_q}$,\emph{Baile(T$_{n+1}$)} vale.
 
 
 
