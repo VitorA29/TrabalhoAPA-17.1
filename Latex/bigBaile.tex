@@ -1,0 +1,182 @@
+\documentclass[a4paper]{article}
+
+\usepackage[portuguese]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage {algpseudocode}
+\usepackage{amsmath}
+\usepackage[portuguese,onelanguage,lined]{algorithm2e}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{natbib}
+\usepackage[a4paper,rmargin=2cm,lmargin=3cm,tmargin=3cm,bmargin=2cm]{geometry}
+\usepackage{subfig}
+
+\title{Organizando um Baile: Solução do Problema da Organização de uma festa}
+\author{Erick Grilo, Max Fratane   Matheus Prado e Vitor Araújo}
+
+\SetKwInput{Entrada}{Entrada}
+\SetKwInput{Resultado}{Resultado}
+\SetKwFor{Enquanto}{Enquanto}{faca}{fim-enquanto}
+\SetKwIF{Se}{Senao Se}{Senao}{Se}{Entao}{Senao}{fim-se}
+
+
+
+\begin{document}
+\begin{flushright}
+\thispagestyle{empty}
+\includegraphics[width=.2\textwidth]{IC-UFF.pdf}
+\end{flushright}
+
+\begin{center}
+\vfill
+\vspace{-7em}
+\emph{\Large Organizando um Baile: Solução do Problema da Organização de uma festa}
+\begin{flushright}
+\vspace{1em}
+\makebox[.5\textwidth][l]{\parbox{.5\textwidth}{
+\vspace{2em}
+Erick Grilo\\ 
+Max Fratane\\ 
+Matheus Prado\\
+Vitor Santos\\
+}}
+\end{flushright}
+\vfill
+\end{center}
+
+\newpage
+
+\section{Introdução}
+\paragraph{} O problema consiste em que o professor Stewart foi contradado para prestar um serviço de consultoria para o presidente de uma determinada empresa que deseja realizar uma festa e nós vamos ajudá-lo. A empresa possui uma hierarquia tal que a relação de hierarquia forma uma árvore 
+cuja raiz é o presidente da empresa. O departamento do RH classificou cada um dos empregados com uma classificação de convivialidade (que é um número real). Para a festa ser proveitosa o máximo para todos que forem, o presidente não quer que ambos um funcionário e seu supervisor vão simultaneamente.
+\paragraph{} Ao professor Stewart, é dada uma árvore
+onde cada nó da árvore é um funcionário da companhia, que possui um nome e um valor de convivialidade, onde o pai desse nó é o seu supervisor imediato. O objetivo é criar um algoritmo que cria uma lista de convidados que maximiza a soma dos valores de convivialidade dos convidados.
+
+\section{O Algoritmo}\label{sec:rec}
+\paragraph{} A ideia do algoritmo consiste em solucionar o problema para a árvore de funcionários, com dois casos: caso a árvore tenha somente um nó, e caso a árvore tenha mais de um nó. Dessa forna, a partir do enunciado, temos:
+
+
+\begin{equation}
+	Baile(tree) = \begin{cases}
+		\text{convivialidade(\textit{tree}),}  \text{caso tree não tenha filhos}\\
+		\text{MAX}  \begin{cases}
+			\sum \text{Baile(\textit{t}),}  \forall t \in \text{filho(\textit{tree})}\\
+			\text{convivialidade(\textit{raiz})} + \sum  Baile(t), \forall t \in \text{neto(\textit{tree})}
+			\end{cases}
+		\end{cases}
+\end{equation}
+\paragraph{}Onde o caso base é o caso de \textit{tree} ser uma árvore com um só nó e a relação de recorrência consiste no caso de tree ter filhos: temos que avaliar então, dentre todos os filhos da árvore de entrada, quais serão os nós da árvore que maximizarão o somatório de convivialidade, tomando a precaução de não permitir que um empregado e seu supervisor imediato possam ir ao baile. Nesse caso, na primeira linha da parte do MAX, é avaliado o caso dos filhos de tree (caso o nó da árvore atual vá à festa), e na segunda linha, a convivialidade do nó imediatamente acima de tree e os filhos dos seus filhos, ou seja, o funcionário do funcionário da empresa. Dessa forma, é evitado que um funcionário e seu supervisor imediato possam ir ao baile. A função funcionário retorna o funcionário de um determinado nó, enquanto a função conviviabiidade retorna o valor de convivialidade de um determinado nó.\\
+\paragraph{}Da relação de recorrência apresentada acima, temos o seguinte pseudo-código, que ilustra como o algoritmo funciona:
+
+\begin{algorithm}
+\DontPrintSemicolon
+\Entrada{tree: uma árvore com os funcionários da empresa}
+\Saida{A lista de convidados tais que a soma dos valores de convivialidade de seus elementos seja a máxima possível}
+Resolver(tree):\;
+\Begin{
+Baile(tree,lista)\;
+\Return lista}
+\caption{{\sc Resolver}}
+\label{alg:resolver}
+\end{algorithm}
+
+\paragraph{}Onde, a função \emph{resolver} retorna a lista desejada, enquanto a função principal responsável por procurar a sequência de valores que maximizam a soma das convivialidades (\emph{baile}) é chamada no seu escopo. Tal função tem seu comportamento descrito a seguir:\\
+
+\begin{algorithm}
+\DontPrintSemicolon 
+\Entrada{tree: uma árvore com os funcionários da empresa, Lista: lista de convidados, inicialmente vazia}
+\Saida{O maior valor de convivialidade, de acordo com o caso}
+
+Baile(tree,lista):\;
+\Begin{
+    \uIf{$\text{tree já foi visitado}$}{
+	$lista \gets \text{append(lista,lista(tree))}\text{//junta a lista de entrada com a lista armazenada no nó}$\;
+	\Return o valor armazenado em tree
+     }
+     $visitada(tree) \gets True$//o nó tree é marcado como visitado\;
+    \uIf{$\text{tree não possui filhos}$}{
+      $lista \gets \text{adicionar funcionario(tree)}$//funcionário(tree): retorna o funcionário desse nó da árvore.\;
+      $listaArmazenada \gets lista(tree)$//armazena lista de tree\;
+      $crArmazenada \gets convivialidade(tree)$\;
+      \Return convivialidade(tree)//convivialidade(tree): retorna o valor de convivialidade desse nó da árvore.\;
+    }
+    \Else{
+      $A \gets 0.0$\;
+      $ B \gets \text{convivialidade(tree)}$\;
+      \ForEach{filho $x \in \text{filho(tree)}$}{
+      $A \gets A + Baile(x,listaA) $//listaA: lista auxiliar\;
+           \ForEach{filho $y \in \text{filho(x)} $}{
+           $B \gets B + Baile(y,listaB) $//listaB: lista auxiliar\;
+            }
+       }
+      \If{$B > A$}{
+	$listaB \gets \text{listaB}+ \text{funcionário(tree)}$\;
+	$listaArmazenada \gets append(listaArmazenada,listaB)$\;
+	$lista \gets append(lista,listaB)$\;
+	\Return B\;
+	}
+	$listaArmazenada \gets append(listaArmazenada,listaA)$\;
+	$lista \gets append(lista,listaA)$\;
+	$crArmazenada \gets crArmazenada +  A$\;
+	\Return A\;
+	}
+} 
+\caption{{\sc Baile}}
+\label{alg:baile}
+\end{algorithm}
+\newpage
+\section{Exemplo}
+\paragraph{}Suponta que a empresa em questão seja uma pequena empresa de informática, e como estamos em junho, A empresa pediu para usarmos o algoritmo para resolvermos o problema em questão referente à uma festa junina. Dessa forma, se um funcionário for, nem seu subordinado imediato nem o seu superior imediato poderão ir. A árvore abaixo ilustra a organização dos funcionários dessa empresa:\\
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale=0.69]{arvore2.png}
+\caption{Exemplo de uma árvore que representa funcionários de uma empresa.}
+\label{arvore}
+\end{figure}
+
+\paragraph{}Ao se executar o algoritmo, temos que o mesmo verificará que a árvore de entrada não é uma árvore sem filhos. Logo, ele segue o segundo caso descrito na relação de recorrência, que verifica o máximo dos valores entre todos os filhos de \emph{tree} ou o valor de convivialidade da raiz com o dos netos (assim, respeitando a restrição).\\
+
+\paragraph{}Ao entrar no caso de \emph{tree} (a raiz) ter filhos, para cada filho de \emph{tree}, a função \emph{baile} é chamada recursivamente a fim de armazenar o valor de convivialidade de cada um dos filhos de \emph{tree} em uma variável A qualquer. Em seguida, o mesmo ocorre, só que agora para os netos de \emph{tree}, armazenando a soma dos valores em B (que já recebera o valor de convivialidade de \emph{tree}) 
+
+\newpage
+\section{Prova da Corretude do Algoritmo}
+
+\paragraph{}A função que resolve o problema é dada pelo pseudocódigo definido em \ref{alg:resolver} (\emph{resolver}). Porém, a função que efetivamente resolve e processa os dados para solucionar o problema é a ~\ref{alg:baile} (\emph{Baile)}. Dessa forma, ao provarmos a corretude da função \emph{Baile}, provamos a corretude de toda o algortimo que soluciona o problema.\\
+
+Seja \emph{Baile(T)}: A chamada da função \emph{Baile} tal como descrita na relação de recorrência na seção \ref{sec:rec} ou seja, \emph{Baile}(T) retorna o valor máximo do somatório das convivialidades dos seus nós. A prova será feita por indução forte estrutural na árvore de entrada para o problema.\\
+
+\textbf{(i) \underline{Base da indução:}} \emph{Baile}(T$_{0}$) é verdadeira?\\
+\qquad Seja \emph{Baile}(T$_0$) : O valor máximo da soma de convivialidade da árvore que possui apenas um nó (sem filhos). Como só existe um único nó a ser avaliado, temos que o seu valor de convivialidade (por definição) é o que maximiza o somatório dos valores de convivialidade da árvore. Portanto, a lista retornada por \emph{Resolver} só possui o funcionário representado por esse nó como um convidado. Logo, temos que \emph{Baile}(T$_{0}$) vale.\\
+
+\textbf{(ii) \underline{Hipótese de Indução:}} Sejam  T$_{1}$,T$_{2}$,T$_{3}$,\ldots,T$_{n}$ sub-árvores formadas a partir da raiz (árvore de entrada para o problema) cujas raízes estão no k-ésimo nível, para k = 1, 2, \ldots, n. Logo, supor que \emph{Baile}(T$_k$) vale, para k = 1, 2, \ldots, n. Por causa dessa suposição, temos que a relação de recorrência também passa a valer para sub-árvores de T$_k$, ou seja, árvores T$_{k_q}$ que são sub-árvores de uma T$_k$, com q = 1,2,\ldots,m.\\
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[scale= 0.48]{arvorecorretude.png}
+\caption{Exemplo de uma árvore com até n níveis e m filhos, onde o limite de m pode variar de nível em nível, uma vez que a árvore é n-ária}
+\label{arvorecorretude}
+\end{figure}
+
+\textbf{(iii) \underline{Passo Indutivo:}} Provar válido para qualquer árvore do nível \emph{Baile}(T$_n+1$), uma T$_{n+1_q}$ qualquer, q = 1,2,\ldots,m.\\
+Ao entrarmos nesse passo, fixemos para uma T$_{n+1_q}$ qualquer tal como na árvore acima, sem perda de generalidade. A partir daí, temos:
+pela hipótese de indução, \emph{Baile}(T$_k$) é o valor máximo da convivialidade para uma sub-árvore do nível k, T$_{k}$, para k = k+1,k+2,\ldots,n. Dessa forma, temos que \emph{Baile}(T$_k$) é o valor máximo do somatório do valor de convivialidade de T$_k$. Ao considerarmos que \emph{Baile}(T$_n$), vale (pela hipótese de indução), se \emph{Baile}(T$_n$) possui filhos, chegamos em \emph{Baile}(T$_{n+1}$) recursivamente. Logo, temos que analisar dois casos distintos:
+
+\textbf{I)} Uma árvore qualquer do nível T$_{n+1}$, a T$_{n+1_q}$ que estamos analisando não possui filhos : pela base da indução, nota-se que o valor de convivalidade máximo dessa árvore, é o seu próprio valor de convivialidade.
+
+\textbf{II)}Uma árvore qualquer do nível T$_{n+1}$ possui filhos:
+\paragraph{}Seja n$_1$ = $\sum \text{\emph{Baile(t)}}, \forall t \in \text{filho(T$_{n+1_q}$)}$. Pela hipótese de indução, temos que \emph{Baile}(T$_k$) vale, para k = 1,2,\ldots, n. Como extendemos isso para qualquer filho de T$_k$ (logo, para qualquer filho de T$_n$), vale também para o caso de T$_{n+1_q}$ (que é alcançado recursivamente na chamada \emph{Baile}(T$_n$), onde T$_{n+1}$ é filha de T$_n$.  Portanto, n1 é o somatório dos valores dos filhos de uma árvore qualquer do nível T$_{n+1}$, a T$_{n+1_q}$ genérica introduzida no passo indutivo.
+
+Agora, seja n$_2$ = convivialidade(raiz) + $\sum \text{\emph{Baile(t)}}, \forall t \in \text{neto(T$_{n+1}$)}$. Para o caso de T$_{n+1}$, faz-se a raiz = uma árvore de T$_n$ que seja a raiz da árvore qualquer que estamos analisando em T$_{n+1}$. Pela hipótese de indução, temos que \emph{Baile}(T$_{k_q}$) também vale, $\forall(\text{T}_k)$  sub-árvore da (também sub-árvore) T$_k$. Tomando T$_k$ = T$_n$, a hipótese de indução vale também para um t neto de T$_n$. Dessa forma, temos que n2 é o somatório dos valores de convivialidade da árvore T$_{k_q}$, para k = 1,2,\ldots,n e q = 1,2,\ldots,m.\\
+Logo, por n$_1$ e n$_2$, o valor de convivialidade máximo da árvore original que foi dada como entrada para o problema (T), pois como \emph{Baile}(T) vale para qualquer sub-árvore até o n-ésimo nível (hipótese de indução), pode ser encontrada pela seguinte fórmula:\\
+\begin{center} \textbf{convivialidadeMaxima(T$_{n+1_q}$) =  MAX(n1,n2),} \\onde T$_{n+1_q}$ é uma sub-árvore qualquer de alguma sub-árvore no nível n+1 da árvore original.\\
+\end{center}
+
+\paragraph{}Temos que a função acima culmina justamente na relação de recorrência que foi encontrada. Como MAX retorna o valor máximo entre dois valores, temos que convivialidadeMaxima retorna o valor máximo dentre os possíveis valores máximos que T$_{n+1_q}$ pode ter. Logo, para qualquer sub-árvore de T$_{n+1_q}$,\emph{Baile(T$_{n+1}$)} vale.
+
+
+
+
+
+
+\end{document}
