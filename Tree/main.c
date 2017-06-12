@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <time.h>
 #include "res/Tree.h"
 #include "res/Employee.h"
 #include "res/EmployeeList.h"
@@ -21,6 +22,8 @@ int main(){
 	}
 	Tree t = root;
 	e=NULL;
+	clock_t start, end;
+	double time;
 	while(1){
 		printf("\n");
 		print_super_subs(t);
@@ -81,10 +84,23 @@ int main(){
 				break;
 			case '6':
 				if(!empty_tree(root)){
-					l=resolver(root);
+					printf("Resolver comparativamente?");
+					scanf(" %c", &deci);
+					if(deci=='s')start = clock();
+					l=resolver(root, 1);
+					if(deci=='s')end = clock();
 					print_list(l);
 					printf("\n");
 					exclude_list(l);
+					if(deci=='s'){
+						time=(double)(end - start);
+						start = clock();
+						l=resolver(root, 2);
+						end = clock();
+						printf("Execução dinamica: %f - Execução sem dinamica: %f", time, (double)(end-start));
+						printf("\n");
+						exclude_list(l);
+					}
 				}
 				break;
 			case '7':
