@@ -24,7 +24,7 @@
 \begin{document}
 \begin{flushright}
 \thispagestyle{empty}
-\includegraphics[width=.2\textwidth]{castelao.png}
+\includegraphics[width=.2\textwidth]{IC-UFF.pdf}
 \end{flushright}
 
 \begin{center}
@@ -111,11 +111,11 @@ Baile(tree,lista):\;
        }
       \If{$B > A$}{
 	$listaB \gets \text{listaB}+ \text{funcionário(tree)}$\;
-	$listaArmazenada \gets listaArmazenada + listaB$\;
+	$listaArmazenada \gets append(listaArmazenada,listaB)$\;
 	$lista \gets append(lista,listaB)$\;
 	\Return B\;
 	}
-	$listaArmazenada \gets listaArmazenada + listaA$\;
+	$listaArmazenada \gets append(listaArmazenada,listaA)$\;
 	$lista \gets append(lista,listaA)$\;
 	$crArmazenada \gets crArmazenada +  A$\;
 	\Return A\;
@@ -168,7 +168,7 @@ pela hipótese de indução, \emph{Baile}(T$_k$) é o valor máximo da convivial
 \paragraph{}Seja n$_1$ = $\sum \text{\emph{Baile(t)}}, \forall t \in \text{filho(T$_{n+1_q}$)}$. Pela hipótese de indução, temos que \emph{Baile}(T$_k$) vale, para k = 1,2,\ldots, n. Como extendemos isso para qualquer filho de T$_k$ (logo, para qualquer filho de T$_n$), vale também para o caso de T$_{n+1_q}$ (que é alcançado recursivamente na chamada \emph{Baile}(T$_n$), onde T$_{n+1}$ é filha de T$_n$.  Portanto, n1 é o somatório dos valores dos filhos de uma árvore qualquer do nível T$_{n+1}$, a T$_{n+1_q}$ genérica introduzida no passo indutivo.
 
 Agora, seja n$_2$ = convivialidade(raiz) + $\sum \text{\emph{Baile(t)}}, \forall t \in \text{neto(T$_{n+1}$)}$. Para o caso de T$_{n+1}$, faz-se a raiz = uma árvore de T$_n$ que seja a raiz da árvore qualquer que estamos analisando em T$_{n+1}$. Pela hipótese de indução, temos que \emph{Baile}(T$_{k_q}$) também vale, $\forall(\text{T}_k)$  sub-árvore da (também sub-árvore) T$_k$. Tomando T$_k$ = T$_n$, a hipótese de indução vale também para um t neto de T$_n$. Dessa forma, temos que n2 é o somatório dos valores de convivialidade da árvore T$_{k_q}$, para k = 1,2,\ldots,n e q = 1,2,\ldots,m.\\
-Logo, por n$_1$ e n$_2$, o valor de convivialidade máximo da árvore original que foi dada como entrada para o problema (T), pois como  \emph{Baile}(T)  vale para qualquer sub-árvore no n-ésimo nível, o valor total pode ser encontrada pela seguinte fórmula:\\
+Logo, por n$_1$ e n$_2$, o valor de convivialidade máximo da árvore original que foi dada como entrada para o problema (T), pois como \emph{Baile}(T) vale para qualquer sub-árvore até o n-ésimo nível (hipótese de indução), pode ser encontrada pela seguinte fórmula:\\
 \begin{center} \textbf{convivialidadeMaxima(T$_{n+1_q}$) =  MAX(n1,n2),} \\onde T$_{n+1_q}$ é uma sub-árvore qualquer de alguma sub-árvore no nível n+1 da árvore original.\\
 \end{center}
 
@@ -180,4 +180,3 @@ Logo, por n$_1$ e n$_2$, o valor de convivialidade máximo da árvore original q
 
 
 \end{document}
-
