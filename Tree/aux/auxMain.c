@@ -19,7 +19,6 @@ int main(){
 		root=create_tree();
 		initialize_tree(root);
 	}
-	l=create_list();
 	Tree t = root;
 	e=NULL;
 	while(1){
@@ -82,9 +81,9 @@ int main(){
 				break;
 			case '6':
 				if(!empty_tree(root)){
-					clear_list(l);
-					printf("%.5f\t", resolver(root, l));
+					l = resolver(root);
 					print_list(l);
+					exclude_list(l);
 					printf("\n%d\n", count_complex(root));
 				}
 				break;

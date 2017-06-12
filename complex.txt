@@ -1,0 +1,45 @@
+baile (tree, lista)						}Complex(tree)
+	begin:
+	se tree ja foi visitado:				}O(1)
+		junta lista armazenada de tree em lista.	}O(k) onde k é o numero de elementos da lista.
+		retorne o valor armazenado de tree.		}
+
+	marca tree como visitado.				}O(1)
+	se tree não possui filho then:				}O(1)
+		adicione funcionario(tree) a lista.		}O(1)
+		armazena lista de tree.				}O(1)
+		armazena convivialidade(tree).			}O(1)
+		retorne convivialidade(tree).			}
+
+	senão:
+		A=0.0, B=convivialidade(tree).			}O(1)
+		para x em filho(tree) then:			}O(n_0) onde n_0 e o numero de filhos de tree
+			A+=baile(x, listaA).			}Complex(x)
+			para y em filho(x) then:		}O(m_0) onde m_0 e o numero de filhos de y
+				B+=baile(y, listaB).		}Complex(y)
+
+		se B>A then:					}O(1)
+			adicione funcionario(tree) a listaB.	}O(1)
+			armazena a listaB.			}O(1)
+			junta listaB em lista.			}O(k) onde k é o numero de elementos da lista.
+			armazena B.				}O(1)
+			retorne B.				}
+
+		armazena a listaA.				}O(1)
+		junta listaA em lista.				}O(k) onde k é o numero de elementos da lista.
+		armazena A.					}O(1)
+		retorne A.					}
+end.	
+	logo, a complexidade pode ser extraida da seguinte forma:
+	}Complex(tree) = O(n_0)*Complex(x) + O(n_0)*O(m_0)*Complex(y)
+	}Complex(tree) = O(n_0)*O(m_0)*Complex(y)
+	}Complex(y) = O(n_1)*O(m_1)*Complex(y')
+	}Complex(tree) = O(n_0)*O(m_0)*O(n_1)*O(m_1)*Complex(y')...
+	}Complex(tree) = O(n_0)*O(m_0)*O(n_1)*O(m_1)*...*O(n_j)*O(m_j)
+	}Complex(tree) = O(n) onde n é o número de nós da arvore tree.
+
+resolver (tree):
+	begin:
+	baile(tree, lista).
+	retorne lista.
+end.

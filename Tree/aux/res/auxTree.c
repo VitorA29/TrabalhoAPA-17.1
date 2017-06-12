@@ -49,6 +49,8 @@ float get_conviviality_tree(Tree t){return t->cr;}
 
 Employee get_employee_tree(Tree t){return t->me;}
 
+int get_qtd_nodes_tree(void){return counter;}
+
 int has_sub_tree(Tree t){return t->numSubs!=0;}
 
 int insert_tree(Tree t, Employee emp, Tree super, float cr){
@@ -240,15 +242,25 @@ void exclude_tree(Tree t){
 	return;
 }
 
+int has_neto(Tree t){
+	int i,j;
+	Tree aux;
+	for(i=0;i<t->numSubs;i++){
+		aux=t->sub[i];
+		for(j=0;j<aux->numSubs;j++)if(has_sub_tree(aux->sub[j]))return 1;
+	}
+	return 0;
+}
+
 void print_uma_folha(Tree root){
 	srand(time(NULL));
 	if(!root)return;
 	if(!has_sub_tree(root))print_super_subs(root);
 	Tree t=root;
 	int ind=0;
-	while(!has_sub_tree(has_sub_tree(t))){
+	while(!has_neto(t)){
 		ind = rand() %t->numSubs;
-		t=t->sub[ind];
+		if(has_sub_tree(t->sub[ind]))t=t->sub[ind];
 	}
 	print_super_subs(t);
 }

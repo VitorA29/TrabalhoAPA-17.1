@@ -46,6 +46,8 @@ float get_conviviality_tree(Tree t){return t->cr;}
 
 Employee get_employee_tree(Tree t){return t->me;}
 
+int get_qtd_nodes_tree(Tree t){return counter;}
+
 int has_sub_tree(Tree t){return t->numSubs!=0;}
 
 int insert_tree(Tree t, Employee emp, Tree super, float cr){
@@ -75,7 +77,8 @@ void print_node_tree(Tree t){
 		printf("NULL");
 		return;
 	}
-	printf("{ %d - ", t->index);
+	printf("{ ");
+	printf("%d - ", t->index);
 	print_employee(t->me);
 	if(t->cr==null)printf(" - null }");
 	else printf(" - %.5f }", t->cr);

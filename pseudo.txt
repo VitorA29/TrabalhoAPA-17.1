@@ -1,16 +1,34 @@
-Baile (tree) 
+baile (tree, lista) 
 	begin: //tree :: arvore de funcionarios; lista :: lista de funcionarios convidados.
+	se tree ja foi visitado:
+		junta lista armazenada de tree em lista.//apppend da lista armazenada em lista.
+		retorne o valor armazenado de tree.
+	marca tree como visitado.
 	se tree não possui filho then:
 		adicione funcionario(tree) a lista.//funcionario(t) :: retorna o funcionario desse no da arvore.
-		retorne lista,conviviabilidade(tree).//conviviabilidade(t) :: retorna a conviviabilidade desse no da arvore.
+		armazena lista de tree.
+		armazena convivialidade(tree).
+		retorne convivialidade(tree).//convivialidade(t) :: retorna a convivialidade desse no da arvore.
 	senão:
-		A=0.0, B=conviviabilidade(tree).
+		A=0.0, B=convivialidade(tree).
 		para x em filho(tree) then:
-			A+=Baile(x).
+			A+=baile(x, listaA).
 			para y em filho(x) then:
-				B+=Baile(y).
+				B+=baile(y, listaB).
 		se B>A then:
-			adicione funcionario(tree) a lista.
+			adicione funcionario(tree) a listaB.
+			armazena a listaB.
+			junta listaB em lista.//append da listaB na lista.
+			armazena B.
 			retorne B.
+		armazena a listaA.
+		junta listaA em lista.//Append da listaA na lista.
+		armazena A.
 		retorne A.
+end.
+
+resolver (tree):
+	begin:
+	baile(tree, lista).
+	retorne lista.
 end.

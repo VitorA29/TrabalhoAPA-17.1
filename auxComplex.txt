@@ -1,0 +1,12 @@
+Complex(tree) = visitado?(O(n_0)*Complex(x) + O(n_0)*O(m_0)*Complex(y)):(O(k))
+Como, O(k) sera o melhor caso, a complexidade dependerá de: O(n_0)*Complex(x) + O(n_0)*O(m_0)*Complex(y)
+Como O(n_0)*Complex(x) < O(n_0)*O(m_0)*Complex(y) temos:
+Complex(tree) = O(n_0)*O(m_0)*Complex(y)
+Considerando a arvore y como entrada teremos que complex de y será:
+Complex(y) = O(n_1)*O(m_1)*Complex(y')
+Substituindo complex(y) em complex tree temos:
+Complex(tree) = O(n_0)*O(m_0)*O(n_1)*O(m_1)*Complex(y')
+Fazendo essa analize das sub-árvores ate passar por todos os nós, teremos:
+Complex(tree) = O(n_0)*O(m_0)*O(n_1)*O(m_1)*...*O(n_j)*O(m_j)
+Como so analiza uma vez cada nó da árvore, temos que o produto de todas essas parcelas recairá no numero total de nós da árvore inicial
+Complex(tree) = O(n) onde n é o número de nós da arvore tree.

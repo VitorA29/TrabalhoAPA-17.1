@@ -7,15 +7,17 @@ int main(int argI, char **argS){
 	int nos=atoi(argS[1]);
 	char nome[]="Vitor";
 	FILE *fp=fopen(argS[2],"wt");
-	if(!fp)exit(1);
-	fprintf(fp, "5 0 666\n%s\n", nome);
+	if(!fp)exit(1);	
 	srand(time(NULL));
+	int auxCr = rand() %1000000;
+	float cr=auxCr/1000;
+	fprintf(fp, "5 0 %.3f\n%s\n", cr, nome);
 	int super, aux=nos-1;
-	float cr;
 	while(aux){
 		super =1 + rand() %(nos-aux);
-		cr = rand() %1000;
-		fprintf(fp, "5 %d %f\n%s\n", super, cr, nome);
+		auxCr = rand() %1000000;
+		cr=auxCr/1000;
+		fprintf(fp, "5 %d %.3f\n%s\n", super, cr, nome);
 		aux--;
 	}
 	fclose(fp);

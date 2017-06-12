@@ -40,6 +40,7 @@ void print_list(List l){
 }
 
 void exclude_list(List l){
-	free(l->list);
+	if(!l)return;
+	if(l->list)free(l->list);
 	free(l);
 }

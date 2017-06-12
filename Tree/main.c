@@ -19,7 +19,6 @@ int main(){
 		root=create_tree();
 		initialize_tree(root);
 	}
-	l=create_list();
 	Tree t = root;
 	e=NULL;
 	while(1){
@@ -82,10 +81,10 @@ int main(){
 				break;
 			case '6':
 				if(!empty_tree(root)){
-					clear_list(l);
-					printf("%.5f\t", resolver(root, l));
+					l=resolver(root);
 					print_list(l);
 					printf("\n");
+					exclude_list(l);
 				}
 				break;
 			case '7':
@@ -93,7 +92,6 @@ int main(){
 				break;
 			case 'e':
 				exclude_tree(root);
-				exclude_list(l);
 				return 0;
 		}
 		printf("\n\nRepeating Cyclo\n");
