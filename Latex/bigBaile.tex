@@ -90,19 +90,19 @@ Baile(tree,lista)\;
 Baile(tree,lista):\;
 \Begin{
     \uIf{$\text{tree já foi visitado}$}{
-	$lista \gets \text{append(lista,lista(tree))}\text{//junta a lista de entrada com a lista armazenada no nó}$\;
+	$lista \gets \text{append(lista,lista(tree))}\text{//junta a lista de entrada com a lista armazenada do nó}$\;
 	\Return o valor armazenado em tree
      }
      $visitada(tree) \gets True$//o nó tree é marcado como visitado\;
     \uIf{$\text{tree não possui filhos}$}{
       $lista \gets \text{adicionar funcionario(tree)}$//funcionário(tree): retorna o funcionário desse nó da árvore.\;
-      $listaArmazenada \gets lista(tree)$//armazena lista de tree\;
-      $crArmazenada \gets convivialidade(tree)$\;
+      $listaArmazenada \gets insert(listaArmazenada, lista(tree))$//armazena lista de tree\;
+      $crArmazenado \gets insert(crArmazenado, convivialidade(tree))$\;
       \Return convivialidade(tree)//convivialidade(tree): retorna o valor de convivialidade desse nó da árvore.\;
     }
     \Else{
       $A \gets 0.0$\;
-      $ B \gets \text{convivialidade(tree)}$\;
+      $B \gets \text{convivialidade(tree)}$\;
       \ForEach{filho $x \in \text{filho(tree)}$}{
       $A \gets A + Baile(x,listaA) $//listaA: lista auxiliar\;
            \ForEach{filho $y \in \text{filho(x)} $}{
@@ -110,14 +110,15 @@ Baile(tree,lista):\;
             }
        }
       \If{$B > A$}{
-	$listaB \gets \text{listaB}+ \text{funcionário(tree)}$\;
-	$listaArmazenada \gets append(listaArmazenada,listaB)$\;
-	$lista \gets append(lista,listaB)$\;
+	$listaB \gets insert(listaB, funcion\acute{a}rio(tree))$\;
+	$listaArmazenada \gets insert(listaArmazenada, listaB)$\;
+	$crArmazenado \gets insert(crArmazenado, B)$\;
+	$lista \gets append(lista, listaB)$\;
 	\Return B\;
 	}
-	$listaArmazenada \gets append(listaArmazenada,listaA)$\;
-	$lista \gets append(lista,listaA)$\;
-	$crArmazenada \gets crArmazenada +  A$\;
+	$listaArmazenada \gets insert(listaArmazenada, listaA)$\;
+	$lista \gets append(lista, listaA)$\;
+	$crArmazenado \gets insert(crArmazenado, A)$\;
 	\Return A\;
 	}
 } 
@@ -137,7 +138,7 @@ Baile(tree,lista):\;
 
 \paragraph{}Ao se executar o algoritmo, temos que o mesmo verificará que a árvore de entrada não é uma árvore sem filhos. Logo, ele segue o segundo caso descrito na relação de recorrência, que verifica o máximo dos valores entre todos os filhos de \emph{tree} ou o valor de convivialidade da raiz com o dos netos (assim, respeitando a restrição).\\
 
-\paragraph{}Ao entrar no caso de \emph{tree} (a raiz) ter filhos, para cada filho de \emph{tree}, a função \emph{baile} é chamada recursivamente a fim de armazenar o valor de convivialidade de cada um dos filhos de \emph{tree} em uma variável A qualquer. Em seguida, o mesmo ocorre, só que agora para os netos de \emph{tree}, armazenando a soma dos valores em B (que já recebera o valor de convivialidade de \emph{tree}) 
+\paragraph{}Ao entrar no caso de \emph{tree} (a raiz) ter filhos, para cada filho de \emph{tree}, a função \emph{baile} é chamada recursivamente a fim de armazenar o valor de convivialidade de cada um dos filhos de \emph{tree} em uma variável A qualquer. Em seguida, o mesmo ocorre, só que agora para os netos de \emph{tree}, armazenando a soma dos valores em B (que já recebera o valor de convivialidade de \emph{tree}). Ou seja, Quando \emph{baile}(69) é chamada, temos que avaliar o máximo entre (\emph{baile}(11) + (\emph{baile}(21) + (\emph{baile}(18)) e (69 + \emph{baile}(5) + \emph{baile}(11) \emph{baile}(14)).
 
 \newpage
 \section{Prova da Corretude do Algoritmo}
@@ -158,7 +159,7 @@ Seja \emph{Baile(T)}: A chamada da função \emph{Baile} tal como descrita na re
 \label{arvorecorretude}
 \end{figure}
 
-\textbf{(iii) \underline{Passo Indutivo:}} Provar válido para qualquer árvore do nível \emph{Baile}(T$_n+1$), uma T$_{n+1_q}$ qualquer, q = 1,2,\ldots,m.\\
+\textbf{(iii) \underline{Passo Indutivo:}} Provar válido para qualquer árvore do nível \emph{Baile}(T$_{n+1}$), uma T$_{n+1_q}$ qualquer, q = 1,2,\ldots,m.\\
 Ao entrarmos nesse passo, fixemos para uma T$_{n+1_q}$ qualquer tal como na árvore acima, sem perda de generalidade. A partir daí, temos:
 pela hipótese de indução, \emph{Baile}(T$_k$) é o valor máximo da convivialidade para uma sub-árvore do nível k, T$_{k}$, para k = k+1,k+2,\ldots,n. Dessa forma, temos que \emph{Baile}(T$_k$) é o valor máximo do somatório do valor de convivialidade de T$_k$. Ao considerarmos que \emph{Baile}(T$_n$), vale (pela hipótese de indução), se \emph{Baile}(T$_n$) possui filhos, chegamos em \emph{Baile}(T$_{n+1}$) recursivamente. Logo, temos que analisar dois casos distintos:
 
@@ -167,12 +168,31 @@ pela hipótese de indução, \emph{Baile}(T$_k$) é o valor máximo da convivial
 \textbf{II)}Uma árvore qualquer do nível T$_{n+1}$ possui filhos:
 \paragraph{}Seja n$_1$ = $\sum \text{\emph{Baile(t)}}, \forall t \in \text{filho(T$_{n+1_q}$)}$. Pela hipótese de indução, temos que \emph{Baile}(T$_k$) vale, para k = 1,2,\ldots, n. Como extendemos isso para qualquer filho de T$_k$ (logo, para qualquer filho de T$_n$), vale também para o caso de T$_{n+1_q}$ (que é alcançado recursivamente na chamada \emph{Baile}(T$_n$), onde T$_{n+1}$ é filha de T$_n$.  Portanto, n1 é o somatório dos valores dos filhos de uma árvore qualquer do nível T$_{n+1}$, a T$_{n+1_q}$ genérica introduzida no passo indutivo.
 
-Agora, seja n$_2$ = convivialidade(raiz) + $\sum \text{\emph{Baile(t)}}, \forall t \in \text{neto(T$_{n+1}$)}$. Para o caso de T$_{n+1}$, faz-se a raiz = uma árvore de T$_n$ que seja a raiz da árvore qualquer que estamos analisando em T$_{n+1}$. Pela hipótese de indução, temos que \emph{Baile}(T$_{k_q}$) também vale, $\forall(\text{T}_k)$  sub-árvore da (também sub-árvore) T$_k$. Tomando T$_k$ = T$_n$, a hipótese de indução vale também para um t neto de T$_n$. Dessa forma, temos que n2 é o somatório dos valores de convivialidade da árvore T$_{k_q}$, para k = 1,2,\ldots,n e q = 1,2,\ldots,m.\\
-Logo, por n$_1$ e n$_2$, o valor de convivialidade máximo da árvore original que foi dada como entrada para o problema (T), pois como \emph{Baile}(T) vale para qualquer sub-árvore até o n-ésimo nível (hipótese de indução), pode ser encontrada pela seguinte fórmula:\\
-\begin{center} \textbf{convivialidadeMaxima(T$_{n+1_q}$) =  MAX(n1,n2),} \\onde T$_{n+1_q}$ é uma sub-árvore qualquer de alguma sub-árvore no nível n+1 da árvore original.\\
+\paragraph{}Agora, seja n$_2$ = convivialidade(raiz) + $\sum \text{\emph{Baile(t)}}, \forall t \in \text{neto(T$_{n+1}$)}$. Para o caso de T$_{n+1}$, faz-se a raiz sendo a própria T$_{n+1}$ que é raiz da T$_{n+1_q}$. Como no parágrafo acima, vimos que vale para um filho de uma árvore no nível de T$_{n+1}$ (por valer para qualquer neto de qualquer árvore de T$_{n}$, pela hipótese), vale para a árvore que fixamos, T$_{n+1_q}$. Logo, se a raiz nesse caso é a árvore pai da árvore do nível T$_{n+1}$ fixada, a T$_{n+1_q}$, n2 é o valor do somatório da convivialidade de T$_{n+1_q}$ com os seus netos.\\
+ 
+\paragraph{}Logo, por n$_1$ e n$_2$, o valor de convivialidade máximo da árvore original que foi dada como entrada para o problema (T), pois como \emph{Baile}(T) vale para qualquer sub-árvore até o n-ésimo nível (hipótese de indução), pode ser encontrada pela seguinte fórmula:\\
+\emph{Baile(T)} = \emph{Baile(T$_n$)} + \emph{Baile(T$_{n+1}$)}, onde \emph{Baile(T$_n$)} é o baile para todas as sub-árvores de T (a árvore original), que pela hipótese de indução,vale.\\
+\paragraph{}Porém, podemos reescrever \emph{Baile(T$_{n+1}$)} como sendo:
+\begin{center} 
+\textbf{\emph{Baile(T$_{n+1}$)} = convivialidadeMaxima(T$_{n+1_q}$) =  MAX(n1,n2),} \\$\forall T_{n+1_q}$ filhas de qualquer árvore do nível T$_{n+1}$.
 \end{center}
+\paragraph{}Temos que a função acima culmina justamente na relação de recorrência que foi encontrada. Ao provarmos, sem perda de generalidade, que \emph{Baile} vale para uma \emph{Baile(T$_{n+1_q}$} qualquer, generalizamos acima novamente. Como MAX retorna o valor máximo entre dois valores, temos que convivialidadeMaxima retorna o valor máximo dentre os possíveis valores máximos que T$_{n+1_q}$ pode ter, não retornando um resultado inválido para a solução do problema da árvore de entrada T. Logo, para qualquer sub-árvore de T$_{n+1_q}$,\emph{Baile(T$_{n+1}$)} vale.
+\newpage
 
-\paragraph{}Temos que a função acima culmina justamente na relação de recorrência que foi encontrada. Como MAX retorna o valor máximo entre dois valores, temos que convivialidadeMaxima retorna o valor máximo dentre os possíveis valores máximos que T$_{n+1_q}$ pode ter. Logo, para qualquer sub-árvore de T$_{n+1_q}$,\emph{Baile(T$_{n+1}$)} vale.
+\section{Prova da Complexidade do algoritmo}
+\paragraph{}Após uma série de testes, a primeira versão do algoritmo (sem o uso da noção de programação dinâmica, nesse caso, verificando se o algoritmo já avaliou o valor de convivialidade do nó), havíamos chegado em uma suposição de que o algoritmo parecia estar com a complexidade em $O(n^2)$. Após uma segunda versão do algoritmo ter sido gerada (com a noção de marcar o nó que já foi visitado), chegamos, através de testes e medição de quantidade de nós visitados à complexidade de $O(n)$.\\
+\paragraph{}Pelo método da suposição e verificação, temos que a complexidade de \emph{Baile} está em $O(n)$. A prova será feita por indução em n. Queremos provar que a complexidade de Baile é $O(n)$.\\
+
+\textbf{(i) \underline{Base da indução:}} \emph{Baile} com a árvore de de tamanho 1 é $O(1)$ ?\\
+\qquad Seja P(n): Baile($T_n$) possui complexidade n. Como só existe um único nó a ser avaliado, temos que o número de iterações que o algoritmo faz é apenas 1. Portanto, a compexidade do algoritmo nesse caso é $O(1)$, com n = 1.\\
+
+\textbf{(ii) \underline{Hipótese de Indução:}} Supor válido P(k), para $1\leq k \leq n$ (indução forte).\\
+
+\textbf{(iii) \underline{Passo Indutivo:}} Provar válido P(n+1); ou seja, para uma árvore de entrada que possui n + 1 nós, a complexidade de \emph{Baile}(T$_{n+1}$) é $O(n+1)$ = $O(n)$.\\
+A partir do algoritmo, é possível deduzir:\\
+1 chamada para \emph{Baile(filho(n+1))};\\
+p chamadas de \emph{Baile(neto(n+1))}. Logo, como \emph{Baile(filho(n+1))} visita recursivamente \emph{Baile(neto(n+1))},temos:\\
+\emph{Baile(filho(n+1))} $\in O(p)$ e \emph{Baile(neto(n+1))} $\in O(n)$. Logo, como ($O(p) + O(n)$) = $O(n)$ (pois n > p),\emph{Baile(n+1)} $\in O(n)$.
 
 
 
