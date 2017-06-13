@@ -127,7 +127,7 @@ Baile(tree,lista):\;
 \end{algorithm}
 \newpage
 \section{Exemplo}
-\paragraph{}Suponta que a empresa em questão seja uma pequena empresa de informática, e como estamos em junho, A empresa pediu para usarmos o algoritmo para resolvermos o problema em questão referente à uma festa junina. Dessa forma, se um funcionário for, nem seu subordinado imediato nem o seu superior imediato poderão ir. A árvore abaixo ilustra a organização dos funcionários dessa empresa:\\
+\paragraph{}Suponha que a empresa em questão seja uma pequena empresa de informática, e como estamos em junho, A empresa pediu para usarmos o algoritmo para resolvermos o problema em questão referente à uma festa junina. Dessa forma, se um funcionário for, nem seu subordinado imediato nem o seu superior imediato poderão ir. A árvore abaixo ilustra a organização dos funcionários dessa empresa:\\
 
 \begin{figure}[!htb]
 \centering
@@ -200,7 +200,7 @@ pela hipótese de indução, \emph{Baile}(T$_k$) é o valor máximo da convivial
 A partir do algoritmo, é possível deduzir:\\
 1 chamada para \emph{Baile(filho(n+1))};\\
 p chamadas de \emph{Baile(neto(n+1))}. Logo, como \emph{Baile(filho(n+1))} visita recursivamente \emph{Baile(neto(n+1))},temos:\\
-\emph{Baile(filho(n+1))} $\in O(p)$ e \emph{Baile(neto(n+1))} $\in O(n)$. Logo, como ($O(p) + O(n)$) = $O(n)$ (pois n > p),\emph{Baile(n+1)} $\in O(n)$.
+\emph{Baile(filho(n+1))} $\in O(p)$ e \emph{Baile(neto(n+1))} $\in O(n)$. Logo, como ($O(p) + O(n)$) = $O(n)$ (pois n $>$ p), \emph{Baile(n+1)} $\in O(n)$.
 
 
 
